@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1  
+  selector:
+    matchLabels:
+      app: weatherapp
+  template:
+    metadata:
+      labels:
+        app: weatherapp
+    spec:
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: weatherapp 
+        image: azmifarih/weatherapp:<BUILD_TAG>
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /dev/shm
+            name: dshm
+        ports:
+          - containerPort: 80
+            protocol: TCP
+            name: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weatherapp
+spec:
+  externalName: weatherapp
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: weatherapp
+  type: ClusterIP
