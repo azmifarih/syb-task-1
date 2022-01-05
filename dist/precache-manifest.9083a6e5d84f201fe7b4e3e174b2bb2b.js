@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/progressive-weather-app/img/thunderstorm.7e644c1a.svg"
   },
   {
-    "revision": "5987d2198915bb930fe5",
-    "url": "/progressive-weather-app/js/app.f2f58513.js"
+    "revision": "6f9fbec7b71fa3e113d7",
+    "url": "/progressive-weather-app/js/app.e625d27b.js"
   },
   {
     "revision": "0bb8cb16f4420944c265dfc314c09bb8",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/progressive-weather-app/img/site-image-lg.jpg"
   },
   {
-    "revision": "21a9803c987d9437a191ca1bbb519ee3",
+    "revision": "510972fb62300489d1f147befc0dfc3b",
     "url": "/progressive-weather-app/index.html"
   },
   {
