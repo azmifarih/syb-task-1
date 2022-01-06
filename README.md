@@ -25,7 +25,7 @@ So for this part:
 	extract: false,
     },
 ```
-It will inlining css into bundle js. 
+It will inline CSS into bundle js. 
 
 And then for this part:
 ```js
@@ -35,18 +35,18 @@ And then for this part:
         }
     }
 ```
-It will merging vendor and app js. 
+It will be merging vendor and app js. 
 
-And after that I run the following command to update all packages needed by npm:
+And after that, I run the following command to update all packages needed by npm:
 ```sh
 npm install
 npm update
 ```
-After all packages installed and updated to the latest package, and then I have to build the package:
+After all of the packages are installed and updated to the latest package, and then I have to build the package:
 ```sh
 npm run build
 ```
-And then the result is under dist directory. For the next step, I will copy the "dist" directory to nginx directory. 
+And then the result is under dist directory. For the next step, I will copy the "dist" directory to the nginx directory. 
 
 ## Preparing for setup Docker the Vue App
 I created the following Dockerfile in the root directory:
@@ -60,9 +60,9 @@ COPY /dist /usr/share/nginx/html/progressive-weather-app
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
 ```
-I copy nginx/default.conf for nginx configuration. And then folder "dist" to nginx root folder.  
+I copy nginx/default.conf for nginx configuration. And then folder "dist" to the nginx root folder.  
 
-For building the image and push to docker image registry, I use the following command:
+For building the image and push to the docker image registry, I use the following command:
 ```sh
 docker build -t azmifarih/weatherapp .
 docker login -u azmifarih -p {password}
@@ -82,7 +82,7 @@ docker run \
   --publish 2375:2375 \
   docker:dind 
 ```
-So, I run the docker from image docker:dind. So it's basically only docker. It will be used for docker server when I want to build docker for Jenkins pipeline. I will keep use docker without tls with port 2375 to make it simple. 
+So, I run the docker from image docker:dind. So it's only docker. It will be used for the docker server when I want to build docker for the Jenkins pipeline. I will keep using docker without TLS with port 2375 to make it simple.
 
 And then run the Jenkins the following command:
 ```sh
@@ -96,7 +96,7 @@ docker run \
   --storage-driver overlay2 \
   jenkins/jenkins:lts-jdk11
 ```
-It will run jenkins based on image jenkins/jenkins:lts-jdk11. And then publish port 8080 to access Jenkins GUI. And then port 50000 for Jenkins agent. I create volume jenkins-data to make persistance data. And use storage driver with overlay2. 
+It will run Jenkins based on image jenkins/jenkins:lts-jdk11. And then publish port 8080 to access Jenkins GUI. And then port 50000 for Jenkins agent. I create volume jenkins-data to make persistence data. And use a storage driver with overlay2.
 
 ### Prepare Kubernetes
 
@@ -158,18 +158,18 @@ spec:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 70
 ```
-I use only two replica with maxUnavailable is one and maxSurge is one as well. So, the maximum pod during the deployment update is three and the minimum pod is one. And then using image from the Vue app. For first setup, please remove ":<BUILD_TAG>". I use Service type ClusterIP because I will use ingress controller for public interface. And then the answer for auto scalling, I use hpa based on CPU utilization percentage. Please use the following command to apply Deployment and Service configuration:
+I use only two replicas with maxUnavailable is one and maxSurge is one as well. So, the maximum pod during the deployment update is three, and the minimum pod is one. And then using an image from the Vue app. For the first setup, please remove ":<BUILD_TAG>". I use Service type ClusterIP because I will use an ingress controller for the public interface. And then the answer for auto-scaling, I use hpa based on CPU utilization percentage. Please use the following command to apply Deployment and Service configuration:
 ```sh
 kubectl apply -f weatherapp-kubernetes.yaml
 ```
 
-For the next step, I will configure nginx ingress controller. Run the following command to it:
+For the next step, I will configure the Nginx ingress controller. Run the following command to it:
 ```sh
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 helm install nginx-ingress ingress-nginx/ingress-nginx --set controller.publishService.enabled=true
 ```
-I use cert-manager as well for securing the ingress. Before continue, I create my subdomain to point it to IP of loadbalancer via A record. Please use the following command to install cert-manager:
+I use a cert-manager as well for securing the ingress. Before continuing, I create my subdomain to point it to the IP of the load balancer via A record. Please use the following command to install cert-manager:
 ```sh
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
@@ -195,7 +195,7 @@ spec:
         ingress:
           class: nginx
 ```
-Please keep metadata name for next configuration. And then privateKeySecretRef name should be different every you create new ClusterIssuer. Please use the following command to apply ClusterIssuer configuration:
+Please keep the metadata name for the next configuration. And then the privateKeySecretRef name should be different every you create a new ClusterIssuer. Please use the following command to apply ClusterIssuer configuration:
 ```sh
 kubectl apply -f production_issuer.yaml
 ```
@@ -225,7 +225,7 @@ spec:
             port:
               number: 80
 ```
-cert-manager.io/cluster-issuer use previous metadata name from cluster issuer. And then I use weatherapp.muhammadazmifarih.my.id as my hosts. And this ingress have backend to the Vue app that I already deployed. Please use the following command to apply ingress configuration:
+cert-manager.io/cluster-issuer use previous metadata name from cluster issuer. And then I use weatherapp.muhammadazmifarih.my.id as my hosts. And this ingress has a backend to the Vue app that I already deployed. Please use the following command to apply ingress configuration:
 ```sh
 kubectl apply -f weatherapp-ingress.yaml
 ```
@@ -233,8 +233,7 @@ kubectl apply -f weatherapp-ingress.yaml
 ### Preparing CI/CD Jenkins
 
 #### Plugin Junkins
-First of all, I install NodeJS Plugin, Docker Plugin, and Kubernetes Plugin on Jenkins via GUI. 
-For NodeJS Plugin, I need it to run npm command on the jenkins agent. To configure it, please use the following step:
+First of all, I install NodeJS Plugin, Docker Plugin, and Kubernetes Plugin on Jenkins via GUI. For NodeJS Plugin, I need it to run the npm command on the Jenkins agent. To configure it, please use the following step:
 - Click "Manage Jenkins"
 - Click "Global Tool Configuration"
 - Click "Add NodeJS"
@@ -243,7 +242,7 @@ For NodeJS Plugin, I need it to run npm command on the jenkins agent. To configu
 - Choose version 10.24.0
 - Click Save
 
-For Docker Plugin, I need it also to run docker command on the jenkins agent. To configure it, please use the following step:
+For Docker Plugin, I need it also to run the docker command on the Jenkins agent. To configure it, please use the following step:
 - Click "Manage Jenkins"
 - Click "Global Tool Configuration"
 - Click "Add Docker
@@ -252,9 +251,9 @@ For Docker Plugin, I need it also to run docker command on the jenkins agent. To
 - Click Add Installer then choose "Download from docker.com"
 - Click Save
 
-I need that both of plugin later for creating Jenkinsfile.
+I need that both plugins later for creating Jenkinsfile.
 
-For Kubernetes Plugin, I need it to connect between Jenkins with Kubernetes. I will only use kubernetes as a node cloud, and there is no another nodes. To configure it, please use the following step:
+For Kubernetes Plugin, I need it to connect between Jenkins with Kubernetes. I will only use Kubernetes as a node cloud, and there are no other nodes. To configure it, please use the following step:
 - Click "Manage Jenkins"
 - Click "Manage Nodes and Clouds"
 - Click "Configure Clouds"
@@ -271,7 +270,7 @@ kubectl cluster-info
 ```sh
 kubectl create serviceaccount jenkins --namespace=jenkins && kubectl describe secret $(kubectl describe serviceaccount jenkins --namespace=jenkins | grep Token | awk '{print $2}') --namespace=jenkins && kubectl create rolebinding jenkins-admin-binding --clusterrole=admin --serviceaccount=jenkins:jenkins --namespace=jenkins
 ```
-- And add a secret text with the token output from previous command
+- And add a secret text with the token output from the previous command
 - Choose a secret text created in "Credentials"
 - Fill Jenkins URL with the IP address of Jenkins with port 8080
 - Fill Jenkins tunnel with the IP address of Jenkins with port 50000
