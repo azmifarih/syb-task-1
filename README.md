@@ -361,7 +361,7 @@ ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 ```
 
 For the pipeline:
-1. Prepare Stage
+1. Prepare Stage\n
 It will clone the source of the Vue app from github and create a tag. 
 2. Compile VueJs
 Run command to install and build the package. The output will be directory "dist".
