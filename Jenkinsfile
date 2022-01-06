@@ -3,8 +3,8 @@ podTemplate(containers: [
     node(POD_LABEL) {
 			env.NODEJS_HOME = "${tool 'Node'}"
 			env.DOCKER_HOME = "${tool 'Docker'}"
-            env.DOCKER_HOST = "tcp://159.223.36.160:2375"
-            env.DOCKER_TLS_CERTDIR = ""
+            		env.DOCKER_HOST = "tcp://159.223.36.160:2375"
+            		env.DOCKER_TLS_CERTDIR = ""
 			env.PATH="${env.NODEJS_HOME}/bin:${env.DOCKER_HOME}/bin:${env.PATH}"
 
 			stage('Prepare') {
