@@ -361,13 +361,13 @@ ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 ```
 
 For the pipeline:
-1. Prepare Stage\n
-It will clone the source of the Vue app from github and create a tag. 
+1. Prepare Stage
+- It will clone the source of the Vue app from github and create a tag. 
 2. Compile VueJs
-Run command to install and build the package. The output will be directory "dist".
+- Run command to install and build the package. The output will be directory "dist".
 3. Build Docker Image Stage
-Build docker image with tag from first stage.
+- Build docker image with tag from first stage.
 4. Push Docker Image Stage
-Push docker image stage with tag from first stage.
+- Push docker image stage with tag from first stage.
 5. Deploy To K8S Cluster Stage
-Deploy image from fourth stage to kubernetes cluster. 
+- Deploy image from fourth stage to kubernetes cluster. 
