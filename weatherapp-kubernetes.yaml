@@ -9,7 +9,7 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-      maxSurge: 1  
+      maxSurge: 1
   selector:
     matchLabels:
       app: weatherapp
@@ -40,3 +40,16 @@ spec:
   selector:
     app: weatherapp
   type: ClusterIP
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: weatherapp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: weatherapp
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
